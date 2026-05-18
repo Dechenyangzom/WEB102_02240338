@@ -1,0 +1,24 @@
+require('dotenv').config();
+const express = require('express');
+ 
+const authRoutes = require('./routes/auth');
+const protectedRoutes = require('./routes/protected');
+const usersRoutes = require('./routes/users');
+ 
+const app = express();
+app.use(express.json());
+ 
+// Routes
+app.use('/auth', authRoutes);
+app.use('/', protectedRoutes);
+app.use('/', usersRoutes);
+ 
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`\nServer running on http://localhost:${PORT}`);
+  console.log('\nAvailable endpoints:');
+  console.log('  POST /auth/register  - Create account');
+  console.log('  POST /auth/login     - Login and get token');
+  console.log('  GET  /profile        - Protected route (needs token)');
+  console.log('  GET  /users          - List all users (no token needed)');
+});
